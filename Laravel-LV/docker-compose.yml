@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+    phu-luanvan-apache:
+        container_name: phu-luanvan-apache
+        build:
+            context: ./docker/apache
+        depends_on:
+            - phu-luanvan-db
+        volumes:
+            - ./:/var/www
+            - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini
+        ports:
+            - "80:80"
+    phu-luanvan-db:
+        container_name: phu-luanvan-db
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: "secret"
+            MYSQL_DATABASE: "project_db"
+        volumes:
+            - ./mysql/data:/var/lib/mysql
+        ports:
+            - "3306:3306"
